@@ -35,6 +35,8 @@ const CardUser = ({ dataUser, repoUser }) => {
                     <a
                       className='btn hover:text-white hover:scale-105'
                       href={repo.html_url}
+                      target='_blank'
+                      rel='noreferrer'
                       key={repo.id}
                     >
                       {repo.name}
