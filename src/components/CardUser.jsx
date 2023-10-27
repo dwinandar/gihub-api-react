@@ -1,12 +1,13 @@
+/* eslint-disable react/prop-types */
 import { Github, FolderGit2 } from "lucide-react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 const CardUser = ({ dataUser, repoUser }) => {
   return (
-    <div className={dataUser.name ? "block" : "hidden"}>
+    <div className={dataUser?.name ? "block" : "hidden"}>
       <div className='mockup-browser border border-base-300 bg-[#1B1F23] rounded-lg md:w-[700px] w-80 bg-browser-img bg-no-repeat bg-cover bg-opacity-75 md:bg-right-top bg-center bg-blend-color-burn drop-shadow-2xl my-10'>
         <div className='mockup-browser-toolbar'>
-          <a className='input border border-base-300' href={dataUser.html_url}>
+          <a className='input border border-base-300' href={dataUser?.html_url}>
             https://github.com/{dataUser?.login}
           </a>
         </div>
@@ -30,18 +31,22 @@ const CardUser = ({ dataUser, repoUser }) => {
                 <FolderGit2 /> My Repository
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3'>
-                {dataUser &&
-                  repoUser.slice(0, 10).map((repo) => (
+                {repoUser?.length === 0 ? (
+                  <div>No Repo</div>
+                ) : (
+                  dataUser &&
+                  repoUser?.map((repo) => (
                     <a
+                      key={repo.id}
                       className='btn hover:text-white hover:scale-105'
                       href={repo.html_url}
                       target='_blank'
                       rel='noreferrer'
-                      key={repo.id}
                     >
                       {repo.name}
                     </a>
-                  ))}
+                  ))
+                )}
               </div>
               <div className='card-actions justify-end mt-12'>
                 <a
@@ -62,9 +67,9 @@ const CardUser = ({ dataUser, repoUser }) => {
   );
 };
 
-CardUser.propTypes = {
-  dataUser: PropTypes.any,
-  repoUser: PropTypes.array,
-};
+// CardUser.propTypes = {
+//   dataUser: PropTypes.any,
+//   repoUser: PropTypes.array,
+// };
 
 export default CardUser;

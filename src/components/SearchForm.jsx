@@ -1,11 +1,8 @@
 import PropTypes from "prop-types";
 
-const SearchForm = ({ onSubmit, user, setUser }) => {
+const SearchForm = ({ user, setUser }) => {
   return (
-    <form
-      className='flex flex-col w-80 max-w-lg md:w-96 gap-2 bg-secondary p-10 rounded-md mt-40 '
-      onSubmit={onSubmit}
-    >
+    <div className='flex flex-col w-80 max-w-lg md:w-96 gap-2 bg-secondary p-10 rounded-md mt-40 '>
       <label htmlFor='cari-user'>Masukkan Username Github</label>
       <input
         type='text'
@@ -19,13 +16,11 @@ const SearchForm = ({ onSubmit, user, setUser }) => {
         required
         className='input input-bordered input-secondary w-full max-w-xs '
       />
-      <button className='btn btn-accent max-w-xs'>Cari User</button>
-    </form>
+    </div>
   );
 };
 
 SearchForm.propTypes = {
-  onSubmit: PropTypes.func,
   user: PropTypes.string,
   setUser: PropTypes.func,
 };

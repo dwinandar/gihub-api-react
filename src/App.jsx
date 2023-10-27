@@ -1,40 +1,81 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchForm from "./components/SearchForm";
 import CardUser from "./components/CardUser";
+import { useDebounce } from "use-debounce";
 
 const API_URL = "https://api.github.com/users/";
 
 function App() {
   const [dataUser, setDataUser] = useState([]);
   const [repoUser, setRepoUser] = useState([]);
-  const [user, setUser] = useState("");
+  const [isLoading, setIsloading] = useState(false);
+  const [isError, setIsError] = useState("");
+  const [userSearch, setUserSearch] = useState("");
+  const controller = new AbortController();
 
-  async function fetchUserGithub(user) {
-    const response = await fetch(`${API_URL}${user}`);
-    const data = await response.json();
-    setDataUser(data);
-  }
+  const [debounceValue] = useDebounce(userSearch, 2000);
 
-  async function fetchRepoUser(user) {
-    const response = await fetch(`https://api.github.com/users/${user}/repos`);
-    const data = await response.json();
-    setRepoUser(data);
-  }
+  useEffect(() => {
+    async function fetchUserGithub() {
+      try {
+        if (userSearch) {
+          setIsloading(true);
+          setIsError("");
+          const response = await fetch(`${API_URL}${userSearch}`, {
+            signal: controller.signal,
+          });
+          if (response.status === 404)
+            return setIsError("User Tidak Ditemukan");
+          const data = await response.json();
+          setDataUser(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setIsloading(false);
+      }
+    }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+    async function fetchRepoUser() {
+      try {
+        if (userSearch) {
+          setIsloading(true);
+          const response = await fetch(
+            `https://api.github.com/users/${userSearch}/repos`,
+            {
+              signal: controller.signal,
+            },
+          );
+          if (!response.ok) return;
+          const data = await response.json();
+          setRepoUser(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user repo:", error);
+      } finally {
+        setIsloading(false);
+      }
+    }
 
-    fetchUserGithub(user);
-    fetchRepoUser(user);
+    fetchUserGithub();
+    fetchRepoUser();
 
-    setUser("");
-  }
+    return () => {
+      controller.abort();
+    };
+  }, [debounceValue]);
 
   return (
     <main className='w-full min-h-screen flex items-center flex-col'>
-      <SearchForm onSubmit={handleSubmit} user={user} setUser={setUser} />
+      <SearchForm user={userSearch} setUser={setUserSearch} />
 
-      <CardUser dataUser={dataUser} repoUser={repoUser} />
+      {isLoading ? (
+        <span className='loading loading-ring loading-lg mt-5'></span>
+      ) : isError ? (
+        <h1 className='text-xl mt-5'>{isError}</h1>
+      ) : (
+        <CardUser dataUser={dataUser} repoUser={repoUser} />
+      )}
     </main>
   );
 }
