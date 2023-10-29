@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SearchForm from "./components/SearchForm";
 import CardUser from "./components/CardUser";
 import { useDebounce } from "use-debounce";
+import Heading from "./components/Heading";
 
 const API_URL = "https://api.github.com/users/";
 
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <main className='w-full min-h-screen flex items-center flex-col'>
+      <Heading />
       <SearchForm user={userSearch} setUser={setUserSearch} />
 
       {isLoading ? (

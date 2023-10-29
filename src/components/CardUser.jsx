@@ -21,13 +21,19 @@ const CardUser = ({ dataUser, repoUser }) => {
               </div>
               <div className='text-center text-white/90'>
                 <h1 className='text-2xl'>{dataUser?.name}</h1>
-                <h2>{dataUser?.bio}</h2>
-                <div className='flex justify-center gap-2'>
-                  <h2>Followers : {dataUser?.followers}</h2>
-                  <h2>Following : {dataUser?.following}</h2>
+                <h2 className='my-2'>{dataUser?.bio}</h2>
+                <div className='flex justify-center gap-4'>
+                  <div>
+                    <h2 className='text-2xl'>{dataUser?.followers}</h2>
+                    <h2>Followers</h2>
+                  </div>
+                  <div>
+                    <h2 className='text-2xl'>{dataUser?.following}</h2>
+                    <h2>Following</h2>
+                  </div>
                 </div>
               </div>
-              <h2 className='card-title text-white/90 mt-7'>
+              <h2 className='card-title text-white/90 mt-7 mb-2'>
                 <FolderGit2 /> My Repository
               </h2>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3'>

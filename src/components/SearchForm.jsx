@@ -2,10 +2,10 @@ import PropTypes from "prop-types";
 
 const SearchForm = ({ user, setUser }) => {
   return (
-    <div className='flex flex-col w-80 max-w-lg md:w-96 gap-2 bg-secondary p-10 rounded-md mt-40 '>
+    <div className='flex flex-col w-80 max-w-lg md:w-96 gap-2 bg-secondary py-7 px-10 rounded-md shadow-inner shadow-slate-800'>
       <label htmlFor='cari-user'>Masukkan Username Github</label>
       <input
-        type='text'
+        type='search'
         id='cari-user'
         name='cari-user'
         value={user}
